@@ -2,7 +2,7 @@ require('dotenv').config();
 
 let mongoose = require('mongoose');
 
-mongoose.connect(process.env.MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true });
+mongoose.connect(process.env.MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false });
 
 const personSchema = new mongoose.Schema({
   name: String,
@@ -68,7 +68,10 @@ const findEditThenSave = (personId, done) => {
 const findAndUpdate = (personName, done) => {
   const ageToSet = 20;
 
-  done(null /*, data*/);
+  Person.findOneAndUpdate({name: personName}, {age: ageToSet}, {new: true}, (err, data) => {
+    if (err) return console.log(err);
+    done(err, data)
+  });
 };
 
 const removeById = (personId, done) => {

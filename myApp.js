@@ -70,12 +70,15 @@ const findAndUpdate = (personName, done) => {
 
   Person.findOneAndUpdate({name: personName}, {age: ageToSet}, {new: true}, (err, data) => {
     if (err) return console.log(err);
-    done(err, data)
+    done(err, data);
   });
 };
 
 const removeById = (personId, done) => {
-  done(null /*, data*/);
+  Person.findByIdAndRemove(personId, (err, data) => {
+    if (err) return console.log(err);
+    done(err, data);
+  });
 };
 
 const removeManyPeople = (done) => {
